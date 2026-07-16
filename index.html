@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#07080C">
-<title>DeltaX · 合约交易所</title>
+<title>8888 · 合约交易所</title>
 <style>
   :root{
     --bg:#07080C; --card:#10131B; --card2:#171B26; --line:rgba(255,255,255,.07);
@@ -29,7 +29,7 @@
     .phone{width:414px;height:min(880px,94vh);border-radius:46px;border:1px solid #23262f;
       box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 10px #0b0c11,0 0 90px rgba(124,92,255,.14)}
   }
-  .scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:96px}
+  .scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:176px}
   .scroll::-webkit-scrollbar{display:none}
   /* ---------- status bar ---------- */
   .statusbar{display:flex;justify-content:space-between;align-items:center;
@@ -45,6 +45,7 @@
   .logo .name i{font-style:normal;background:var(--brand-g);-webkit-background-clip:text;background-clip:text;color:transparent}
   .search{flex:1;display:flex;align-items:center;gap:7px;background:var(--card);
     border:1px solid var(--line);border-radius:99px;padding:8px 13px;color:var(--t3);font-size:13px;white-space:nowrap;overflow:hidden}
+  .top-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
   .icon-btn{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
     color:var(--t2);flex-shrink:0;transition:transform .1s}
   .icon-btn:active{transform:scale(.9)}
@@ -52,6 +53,7 @@
   /* ---------- asset card ---------- */
   .asset{margin:4px 16px 0;border-radius:20px;padding:18px 18px 16px;position:relative;overflow:hidden;
     background:linear-gradient(160deg,#181430 0%,#111420 45%,#0e1a1c 100%);border:1px solid rgba(124,92,255,.22)}
+  .is-hidden{display:none!important}
   .asset::before{content:"";position:absolute;width:220px;height:220px;right:-70px;top:-120px;
     background:radial-gradient(circle,rgba(124,92,255,.35) 0%,transparent 70%);pointer-events:none}
   .asset::after{content:"";position:absolute;width:180px;height:180px;left:-60px;bottom:-120px;
@@ -59,7 +61,6 @@
   .asset .label{display:flex;align-items:center;gap:6px;color:var(--t2);font-size:12.5px}
   .asset .total{margin-top:7px;font-size:32px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:baseline;gap:7px}
   .asset .total small{font-size:13px;color:var(--t2);font-weight:600}
-  .asset .sub{margin-top:5px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2)}
   .pnl{color:var(--up);background:var(--up-bg);padding:2.5px 8px;border-radius:7px;font-weight:700;font-size:12px}
   .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;position:relative}
   .act{display:flex;flex-direction:column;align-items:center;gap:6px;padding:9px 0 7px;border-radius:13px;
@@ -67,6 +68,29 @@
   .act:active{transform:scale(.94)}
   .act .ic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#BBA8FF}
   .act span{font-size:12px;color:var(--t1);font-weight:600}
+  .guest-asset{margin:4px 16px 0;border-radius:20px;padding:18px 16px 16px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#edf0f6 0%,#ffffff 100%);border:1px solid rgba(255,255,255,.65);color:#14161f}
+  .guest-asset::before{content:"";position:absolute;inset:-20% auto auto 60%;width:180px;height:180px;
+    background:radial-gradient(circle,rgba(124,92,255,.12) 0%,transparent 72%)}
+  .guest-top{display:flex;align-items:center;justify-content:flex-end;color:#515763}
+  .guest-orbs{position:relative;height:124px;margin-top:4px}
+  .guest-orb{position:absolute;width:54px;height:54px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,#7b8295 0%,#2b2f39 58%,#12151d 100%);
+    box-shadow:inset 0 2px 8px rgba(255,255,255,.18),0 8px 18px rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;
+    color:#d8dce5;font-weight:800;font-size:22px}
+  .guest-orb:nth-child(1){left:50%;top:0;transform:translateX(-50%)}
+  .guest-orb:nth-child(2){left:22%;top:30px}
+  .guest-orb:nth-child(3){right:22%;top:30px}
+  .guest-orb:nth-child(4){left:34%;bottom:10px}
+  .guest-orb:nth-child(5){right:34%;bottom:10px}
+  .guest-bonus{margin-top:6px;text-align:center;font-size:15px;font-weight:800;color:#14161f}
+  .guest-bonus b{color:#14b8ff}
+  .guest-form{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .guest-input{height:40px;border:none;border-radius:12px;background:#f3f5f9;color:#7c8392;
+    padding:0 14px;font-size:13px;outline:none}
+  .guest-submit{height:42px;border:none;border-radius:12px;background:#04070d;color:#fff;
+    font-size:14px;font-weight:800;letter-spacing:.02em}
   /* ---------- notice ---------- */
   .notice{margin:12px 16px 0;display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:12px;
     background:var(--card);border:1px solid var(--line);font-size:12.5px;color:var(--t2);overflow:hidden}
@@ -96,14 +120,15 @@
   .traders{display:flex;gap:10px;overflow-x:auto;padding:2px 16px 4px;scrollbar-width:none}
   .traders::-webkit-scrollbar{display:none}
   .trader{flex:0 0 128px;background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:13px 12px 12px;display:flex;flex-direction:column;align-items:center;transition:transform .1s}
+    padding:13px 12px 12px;display:flex;flex-direction:column;align-items:center;transition:transform .1s;position:relative}
   .trader:active{transform:scale(.96)}
+  .trader .period{position:absolute;top:10px;right:10px;font-size:10px;color:var(--t2);font-weight:700}
   .trader .ava{width:44px;height:44px;border-radius:50%;padding:2px;background:var(--brand-g)}
   .trader .ava div{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;
     font-weight:800;font-size:16px;color:#fff;border:2px solid var(--card)}
   .trader .nm{margin-top:8px;font-size:13px;font-weight:700}
-  .trader .roi{margin-top:4px;font-size:17px;font-weight:800;color:var(--up)}
-  .trader .meta{margin-top:2px;font-size:10.5px;color:var(--t3)}
+  .trader .roi{margin-top:8px;font-size:17px;font-weight:800;color:var(--up)}
+  .trader .win{margin-top:4px;font-size:11px;color:var(--t2);font-weight:600}
   .trader .follow{margin-top:9px;width:100%;text-align:center;font-size:12px;font-weight:700;padding:6px 0;
     border-radius:9px;background:rgba(124,92,255,.16);color:#BBA8FF;border:1px solid rgba(124,92,255,.3)}
   /* ---------- market ---------- */
@@ -111,7 +136,7 @@
   .tab{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--t3);padding:7px 0;border-radius:9px;transition:.15s}
   .tab.on{background:var(--card2);color:var(--t1);font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
   .m-head{display:flex;padding:12px 16px 6px;font-size:11px;color:var(--t3)}
-  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:118px;text-align:right}
+  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:82px;text-align:right}
   .coin{display:flex;align-items:center;padding:9px 16px;transition:background .15s}
   .coin:active{background:rgba(255,255,255,.03)}
   .coin .c1{flex:1.2;display:flex;align-items:center;gap:10px;min-width:0}
@@ -124,11 +149,10 @@
   .coin .c2{flex:1;text-align:right;padding-right:10px}
   .coin .price{font-size:14.5px;font-weight:700;transition:color .3s}
   .coin .fiat{font-size:11px;color:var(--t3);margin-top:2px}
-  .coin .c3{width:118px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+  .coin .c3{width:82px;display:flex;align-items:center;justify-content:flex-end}
   .chg{min-width:62px;text-align:center;font-size:12.5px;font-weight:700;padding:6px 0;border-radius:9px;color:#fff}
   .chg.u{background:var(--up)}.chg.d{background:var(--down)}
   .flash-u{color:var(--up)!important}.flash-d{color:var(--down)!important}
-  .spark{width:46px;height:26px;flex-shrink:0}
   /* ---------- data strip ---------- */
   .strip{display:flex;gap:10px;margin:14px 16px 0}
   .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
@@ -138,7 +162,7 @@
   .ratio{margin-top:7px;height:5px;border-radius:3px;overflow:hidden;display:flex;gap:2px}
   .ratio .l{background:var(--up);width:62%}.ratio .r{background:var(--down);flex:1}
   /* ---------- bottom nav ---------- */
-  .nav{position:absolute;left:0;right:0;bottom:0;height:80px;
+  .nav{position:absolute;left:0;right:0;bottom:74px;height:80px;
     background:linear-gradient(to top,rgba(9,10,15,.98) 60%,rgba(9,10,15,.75));
     backdrop-filter:blur(14px);border-top:1px solid var(--line);
     display:flex;align-items:flex-start;padding:9px 6px calc(10px + env(safe-area-inset-bottom))}
@@ -150,6 +174,17 @@
     display:flex;align-items:center;justify-content:center;color:#fff;
     box-shadow:0 6px 20px rgba(124,92,255,.5),0 0 0 5px var(--bg);transition:transform .12s}
   .nav .trade:active .ball{transform:scale(.92)}
+  .h5-shell{position:absolute;left:0;right:0;bottom:0;height:74px;background:#f3f3f5;color:#121212;
+    border-top:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;justify-content:space-between;
+    padding:6px 12px calc(8px + env(safe-area-inset-bottom))}
+  .h5-top{display:flex;align-items:center;gap:10px;font-size:12px;color:#4b4b50}
+  .h5-top .mode{font-weight:700;letter-spacing:.01em}
+  .h5-top .addr{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;
+    background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:6px 12px;font-weight:600;color:#1b1b1f}
+  .h5-top .addr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .h5-tools{display:flex;align-items:center;justify-content:space-between;padding:0 2px 2px;color:#70757f}
+  .h5-tools .tool{width:34px;height:24px;display:flex;align-items:center;justify-content:center}
+  .home-indicator{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);width:108px;height:4px;border-radius:999px;background:#111}
 </style>
 </head>
 <body>
@@ -167,28 +202,44 @@
 
   <!-- top bar -->
   <div class="topbar">
-    <div class="logo"><div class="mark">Δ</div><div class="name">Delta<i>X</i></div></div>
-    <div class="search">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      搜索 BTC / 合约 / 跟单
+    <div class="logo"><div class="mark">8</div><div class="name">8888</div></div>
+    <div class="top-actions">
+      <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 7.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-4 3v-5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/><path d="M8 11.5h8M8 14.5h5"/></svg></div>
+      <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2.5" y="12" width="4" height="7" rx="2"/><rect x="17.5" y="12" width="4" height="7" rx="2"/><path d="M20 19a3 3 0 0 1-3 3h-3"/></svg></div>
     </div>
-    <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg></div>
-    <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2.5" y="12" width="4" height="7" rx="2"/><rect x="17.5" y="12" width="4" height="7" rx="2"/><path d="M20 19a3 3 0 0 1-3 3h-3"/></svg></div>
+  </div>
+
+  <!-- guest asset -->
+  <div class="guest-asset" id="guestAsset">
+    <div class="guest-top">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.6 2.6"/></svg>
+    </div>
+    <div class="guest-orbs" aria-hidden="true">
+      <div class="guest-orb">₿</div>
+      <div class="guest-orb">Đ</div>
+      <div class="guest-orb">Ł</div>
+      <div class="guest-orb">X</div>
+      <div class="guest-orb">◇</div>
+    </div>
+    <div class="guest-bonus"><b>$100,000</b> 首充专享好礼</div>
+    <div class="guest-form">
+      <input class="guest-input" id="guestPhone" type="text" placeholder="邮箱 / 手机号">
+      <button class="guest-submit" id="guestLoginBtn" type="button">注册/登录</button>
+    </div>
   </div>
 
   <!-- asset card -->
-  <div class="asset">
+  <div class="asset is-hidden" id="loggedAsset">
     <div class="label">总资产估值 (USDT)
       <span class="icon-eye" id="eye" style="display:flex">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
       </span>
     </div>
     <div class="total num"><span id="totalAsset">88,131.20</span><small id="totalFiat">≈ ¥ 634,318.65</small></div>
-    <div class="sub"><span>今日盈亏</span><span class="pnl num" id="pnl">+1,204.52 (+1.38%)</span></div>
     <div class="actions">
       <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M4 20h16"/></svg></div><span>充值</span></div>
       <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9m0 0l-4.5 4.5M12 9l4.5 4.5"/><path d="M4 4h16"/></svg></div><span>提现</span></div>
-      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h13m0 0l-3-3m3 3l-3 3M20 16H7m0 0l3-3m-3 3l3 3"/></svg></div><span>划转</span></div>
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M3 11h18"/><path d="M8 4v6M16 4v6"/></svg></div><span>红包</span></div>
       <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.4"/><path d="M3.5 20c.6-3.4 2.8-5.2 5.5-5.2s4.9 1.8 5.5 5.2"/><path d="M16 4.5c1.7.6 2.8 2 2.8 3.9 0 1.4-.6 2.5-1.6 3.2M17.5 14.6c2.2.7 3.6 2.4 4 5.4"/></svg></div><span>跟单</span></div>
     </div>
   </div>
@@ -197,10 +248,10 @@
   <div class="notice">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#BBA8FF" stroke-width="2"><path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>
     <div class="wrap"><ul>
-      <li>DeltaX 上线 SUI/USDT 永续合约，最高 75x 杠杆</li>
+      <li>8888 上线 SUI/USDT 永续合约，最高 75x 杠杆</li>
       <li>合约大赛第 8 期开启：总奖池 200,000 USDT</li>
       <li>系统升级公告：7 月 18 日 02:00–02:30 (UTC+8)</li>
-      <li>DeltaX 上线 SUI/USDT 永续合约，最高 75x 杠杆</li>
+      <li>8888 上线 SUI/USDT 永续合约，最高 75x 杠杆</li>
     </ul></div>
   </div>
 
@@ -215,10 +266,10 @@
   <!-- market -->
   <div class="sec-head"><h2>行情</h2><a href="javascript:;">全部 ›</a></div>
   <div class="tabs" id="tabs">
-    <div class="tab" data-t="fav">自选</div>
-    <div class="tab on" data-t="hot">热门</div>
-    <div class="tab" data-t="gain">涨幅榜</div>
-    <div class="tab" data-t="new">新币</div>
+    <div class="tab on" data-t="fav">自选</div>
+    <div class="tab" data-t="gain">涨幅</div>
+    <div class="tab" data-t="lose">跌幅</div>
+    <div class="tab" data-t="volume">成交额</div>
   </div>
   <div class="m-head"><span class="c1">名称 / 24h额</span><span class="c2">最新价</span><span class="c3">24h 涨跌</span></div>
   <div id="coins"></div>
@@ -226,23 +277,40 @@
   <!-- data strip -->
   <div class="strip">
     <div class="stat"><div class="k">BTC 资金费率 / 倒计时</div><div class="v up num">+0.0081% <span style="font-size:11px;color:var(--t3);font-weight:600" class="num" id="funding">02:51:09</span></div></div>
-    <div class="stat"><div class="k">全网多空比 (24h)</div><div class="v num">1.63 <span style="font-size:11px;color:var(--t3);font-weight:600">多 62%</span></div><div class="ratio"><div class="l"></div><div class="r"></div></div></div>
+    <div class="stat"><div class="k">ETH 资金费率 / 倒计时</div><div class="v up num">+0.0103% <span style="font-size:11px;color:var(--t3);font-weight:600" class="num" id="fundingEth">02:51:09</span></div></div>
   </div>
 
   <!-- traders -->
-  <div class="sec-head"><h2>金牌带单 · 一键跟随</h2><a href="javascript:;">榜单 ›</a></div>
+  <div class="sec-head"><h2>金牌带单 · 一键跟随</h2><a href="javascript:;">更多 ›</a></div>
   <div class="traders" id="traders"></div>
 
-  <div style="text-align:center;color:var(--t3);font-size:11px;padding:22px 0 8px">— DeltaX · 交易有风险，杠杆需谨慎 —</div>
+  <div style="text-align:center;color:var(--t3);font-size:11px;padding:22px 0 8px">— 8888 · 交易有风险，杠杆需谨慎 —</div>
 </div>
 
   <!-- bottom nav -->
   <div class="nav">
     <div class="it on"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9v11h13V9"/></svg>首页</div>
     <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V11M10 19V5M16 19v-8M22 19H2"/></svg>行情</div>
-    <div class="trade"><div class="ball"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3v4M8 17v4M16 5v4M16 19v2M5.5 7h5v10h-5zM13.5 9h5v10h-5z" stroke-linejoin="round"/></svg></div>交易</div>
     <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-5 4 3.5L21 7"/><path d="M15.5 7H21v5.5"/></svg>合约</div>
     <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16.5 15h1.5"/></svg>资产</div>
+  </div>
+  <div class="h5-shell">
+    <div class="h5-top">
+      <span class="mode">aA</span>
+      <div class="addr">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 1 1 8 0v3"/></svg>
+        <span>8888.com · H5 原型</span>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 1-2.34-5.66"/><path d="M20 4v7h-7"/></svg>
+    </div>
+    <div class="h5-tools">
+      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></div>
+      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V5"/><path d="M8 9l4-4 4 4"/><rect x="5" y="16" width="14" height="3" rx="1.5"/></svg></div>
+      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9a3 3 0 0 1 3 3v13l-6-3-6 3V7a3 3 0 0 1 3-3z"/></svg></div>
+      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="12" height="12" rx="2"/><path d="M8 4h10a2 2 0 0 1 2 2v10"/></svg></div>
+    </div>
+    <div class="home-indicator"></div>
   </div>
 </div>
 
@@ -261,10 +329,10 @@ const COINS = [
   {s:"PEPE",n:"Pepe",     p:0.00001214, chg:+15.2, vol:"2.2亿", c:"#3D8130", nw:1},
 ];
 const TRADERS = [
-  {n:"啸风", roi:"+218.6%", win:"胜率 76% · 跟单 1,204", g:"#FF8A5E"},
-  {n:"Kira", roi:"+164.2%", win:"胜率 71% · 跟单 986", g:"#4FD8FF"},
-  {n:"合约老王", roi:"+139.8%", win:"胜率 68% · 跟单 2,310", g:"#0FD98C"},
-  {n:"Momo", roi:"+112.4%", win:"胜率 74% · 跟单 655", g:"#9E7BFF"},
+  {n:"啸风", roi:"+218.6%", win:"胜率 76%", g:"#FF8A5E"},
+  {n:"Kira", roi:"+164.2%", win:"胜率 71%", g:"#4FD8FF"},
+  {n:"合约老王", roi:"+139.8%", win:"胜率 68%", g:"#0FD98C"},
+  {n:"Momo", roi:"+112.4%", win:"胜率 74%", g:"#9E7BFF"},
 ];
 const CNY = 7.19;
 
@@ -283,9 +351,21 @@ function spark(chg, color){
 function fmt(p){ return p>=1000 ? p.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})
   : p>=1 ? p.toFixed(p>=100?2:p>=10?2:3) : p>=0.001 ? p.toFixed(4) : p.toFixed(8); }
 
+function parseCnVolume(v){
+  const match = String(v).match(/([\d.]+)([万亿]?)/);
+  if(!match) return 0;
+  const num = Number(match[1]) || 0;
+  const unit = match[2];
+  if(unit === "亿") return num * 1e8;
+  if(unit === "万") return num * 1e4;
+  return num;
+}
+
 function render(tab){
-  let list = COINS.filter(c => tab==="hot"? c.hot : tab==="fav"? c.fav : tab==="new"? c.nw : true);
+  let list = COINS.filter(c => tab==="fav" ? c.fav : true);
   if(tab==="gain") list = [...COINS].sort((a,b)=>b.chg-a.chg).slice(0,6);
+  if(tab==="lose") list = [...COINS].sort((a,b)=>a.chg-b.chg).slice(0,6);
+  if(tab==="volume") list = [...COINS].sort((a,b)=>parseCnVolume(b.vol)-parseCnVolume(a.vol)).slice(0,6);
   document.getElementById("coins").innerHTML = list.map(c=>{
     const up = c.chg>=0, col = up? "var(--up)":"var(--down)";
     return `<div class="coin" data-s="${c.s}">
@@ -294,11 +374,11 @@ function render(tab){
         <div><div class="nm">${c.s}<small>/USDT</small></div><span class="tag">永续 75x</span></div>
       </div>
       <div class="c2"><div class="price num" id="p-${c.s}">${fmt(c.p)}</div><div class="fiat num">≈¥${fmt(c.p*CNY)} · ${c.vol}</div></div>
-      <div class="c3">${spark(c.chg, up? "#0FD98C":"#FF4A5E")}<div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
+      <div class="c3"><div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
     </div>`;
   }).join("");
 }
-let curTab="hot"; render(curTab);
+let curTab="fav"; render(curTab);
 document.getElementById("tabs").addEventListener("click",e=>{
   const t=e.target.closest(".tab"); if(!t)return;
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
@@ -324,9 +404,10 @@ setInterval(()=>{
 /* ------------ traders ------------ */
 document.getElementById("traders").innerHTML = TRADERS.map(t=>`
   <div class="trader">
+    <div class="period">30天</div>
     <div class="ava" style="background:linear-gradient(135deg,${t.g},#7C5CFF)"><div style="background:var(--card2)">${t.n[0]}</div></div>
     <div class="nm">${t.n}</div><div class="roi num">${t.roi}</div>
-    <div class="meta">30日收益 · ${t.win}</div>
+    <div class="win">${t.win}</div>
     <div class="follow">跟单</div>
   </div>`).join("");
 
@@ -339,20 +420,29 @@ setInterval(()=>{ bi=(bi+1)%slides.length;
 
 /* ------------ eye toggle ------------ */
 let hidden=false;
-const asset=document.getElementById("totalAsset"), fiat=document.getElementById("totalFiat"), pnl=document.getElementById("pnl");
-const orig={a:asset.textContent,f:fiat.textContent,p:pnl.textContent};
+const asset=document.getElementById("totalAsset"), fiat=document.getElementById("totalFiat");
+const orig={a:asset.textContent,f:fiat.textContent};
 document.getElementById("eye").addEventListener("click",()=>{
   hidden=!hidden;
   asset.textContent = hidden? "＊＊＊＊＊＊" : orig.a;
   fiat.textContent  = hidden? "≈ ¥ ＊＊＊＊" : orig.f;
-  pnl.textContent   = hidden? "＊＊＊＊"     : orig.p;
+});
+
+/* ------------ guest login -> logged ------------ */
+const guestAsset = document.getElementById("guestAsset");
+const loggedAsset = document.getElementById("loggedAsset");
+document.getElementById("guestLoginBtn").addEventListener("click",()=>{
+  guestAsset.classList.add("is-hidden");
+  loggedAsset.classList.remove("is-hidden");
 });
 
 /* ------------ funding countdown ------------ */
 let sec=2*3600+51*60+9;
 setInterval(()=>{ sec=(sec-1+28800)%28800;
   const h=String(Math.floor(sec/3600)).padStart(2,"0"),m=String(Math.floor(sec%3600/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");
-  document.getElementById("funding").textContent=`${h}:${m}:${s}`;
+  const time=`${h}:${m}:${s}`;
+  document.getElementById("funding").textContent=time;
+  document.getElementById("fundingEth").textContent=time;
 },1000);
 </script>
 </body>
