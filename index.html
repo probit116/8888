@@ -371,7 +371,7 @@ function render(tab){
     return `<div class="coin" data-s="${c.s}">
       <div class="c1">
         <div class="logo-c" style="background:${c.c}">${c.s[0]}</div>
-        <div><div class="nm">${c.s}<small>/USDT</small></div><span class="tag">永续 75x</span></div>
+        <div><div class="nm">${c.s}<small>/USDT</small></div><span class="tag">永续合约</span></div>
       </div>
       <div class="c2"><div class="price num" id="p-${c.s}">${fmt(c.p)}</div><div class="fiat num">≈¥${fmt(c.p*CNY)} · ${c.vol}</div></div>
       <div class="c3"><div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
