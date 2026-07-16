@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#07080C">
+<title>DeltaX · 合约交易所</title>
+<style>
+  :root{
+    --bg:#07080C; --card:#10131B; --card2:#171B26; --line:rgba(255,255,255,.07);
+    --t1:#F3F5FA; --t2:#98A1B3; --t3:#5B6478;
+    --brand:#7C5CFF; --brand-g:linear-gradient(135deg,#6A4DFF 0%,#9E7BFF 55%,#4FD8FF 130%);
+    --up:#0FD98C; --down:#FF4A5E;
+    --up-bg:rgba(15,217,140,.12); --down-bg:rgba(255,74,94,.12);
+    --r:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:#020308; color:var(--t1);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",sans-serif;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  /* ---------- phone frame ---------- */
+  .phone{position:relative;width:100%;height:100dvh;background:var(--bg);overflow:hidden}
+  @media(min-width:768px){
+    body{background:radial-gradient(1200px 800px at 50% -10%,#14102b 0%,#020308 60%)}
+    .phone{width:414px;height:min(880px,94vh);border-radius:46px;border:1px solid #23262f;
+      box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 10px #0b0c11,0 0 90px rgba(124,92,255,.14)}
+  }
+  .scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:96px}
+  .scroll::-webkit-scrollbar{display:none}
+  /* ---------- status bar ---------- */
+  .statusbar{display:flex;justify-content:space-between;align-items:center;
+    padding:14px 22px 4px;font-size:13px;font-weight:600;color:var(--t1)}
+  .statusbar .icons{display:flex;gap:5px;align-items:center;opacity:.9}
+  /* ---------- top bar ---------- */
+  .topbar{display:flex;align-items:center;gap:10px;padding:10px 16px 12px}
+  .logo{display:flex;align-items:center;gap:7px;flex-shrink:0}
+  .logo .mark{width:30px;height:30px;border-radius:9px;background:var(--brand-g);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;
+    box-shadow:0 4px 14px rgba(124,92,255,.45)}
+  .logo .name{font-size:17px;font-weight:800;letter-spacing:.02em}
+  .logo .name i{font-style:normal;background:var(--brand-g);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .search{flex:1;display:flex;align-items:center;gap:7px;background:var(--card);
+    border:1px solid var(--line);border-radius:99px;padding:8px 13px;color:var(--t3);font-size:13px;white-space:nowrap;overflow:hidden}
+  .top-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .icon-btn{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    color:var(--t2);flex-shrink:0;transition:transform .1s}
+  .icon-btn:active{transform:scale(.9)}
+  svg{display:block}
+  /* ---------- asset card ---------- */
+  .asset{margin:4px 16px 0;border-radius:20px;padding:18px 18px 16px;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,#181430 0%,#111420 45%,#0e1a1c 100%);border:1px solid rgba(124,92,255,.22)}
+  .asset::before{content:"";position:absolute;width:220px;height:220px;right:-70px;top:-120px;
+    background:radial-gradient(circle,rgba(124,92,255,.35) 0%,transparent 70%);pointer-events:none}
+  .asset::after{content:"";position:absolute;width:180px;height:180px;left:-60px;bottom:-120px;
+    background:radial-gradient(circle,rgba(15,217,140,.18) 0%,transparent 70%);pointer-events:none}
+  .asset .label{display:flex;align-items:center;gap:6px;color:var(--t2);font-size:12.5px}
+  .asset .total{margin-top:7px;font-size:32px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:baseline;gap:7px}
+  .asset .total small{font-size:13px;color:var(--t2);font-weight:600}
+  .asset .sub{margin-top:5px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2)}
+  .pnl{color:var(--up);background:var(--up-bg);padding:2.5px 8px;border-radius:7px;font-weight:700;font-size:12px}
+  .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;position:relative}
+  .act{display:flex;flex-direction:column;align-items:center;gap:6px;padding:9px 0 7px;border-radius:13px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);transition:transform .1s}
+  .act:active{transform:scale(.94)}
+  .act .ic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#BBA8FF}
+  .act span{font-size:12px;color:var(--t1);font-weight:600}
+  /* ---------- notice ---------- */
+  .notice{margin:12px 16px 0;display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:12px;
+    background:var(--card);border:1px solid var(--line);font-size:12.5px;color:var(--t2);overflow:hidden}
+  .notice .wrap{flex:1;height:18px;overflow:hidden;position:relative}
+  .notice ul{position:absolute;width:100%;animation:roll 9s infinite}
+  .notice li{list-style:none;height:18px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  @keyframes roll{0%,28%{transform:translateY(0)}33%,61%{transform:translateY(-18px)}66%,94%{transform:translateY(-36px)}100%{transform:translateY(-54px)}}
+  /* ---------- banner ---------- */
+  .banner{margin:12px 16px 0;position:relative;height:96px;border-radius:18px;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:16px 18px;opacity:0;transition:opacity .6s;display:flex;flex-direction:column;justify-content:center}
+  .slide.on{opacity:1}
+  .slide h3{font-size:16.5px;font-weight:800;letter-spacing:.01em}
+  .slide p{font-size:12px;margin-top:5px;opacity:.85}
+  .slide .cta{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.92);color:#1b1440}
+  .s1{background:linear-gradient(120deg,#5B3DF5 0%,#8A63FF 60%,#2AB8E8 130%)}
+  .s2{background:linear-gradient(120deg,#0E4A38 0%,#0FA872 70%,#5AE0A8 140%)}
+  .s3{background:linear-gradient(120deg,#3A2050 0%,#B03A68 80%,#FF8A5E 150%)}
+  .dots{position:absolute;left:18px;bottom:9px;display:flex;gap:4px}
+  .dots i{width:12px;height:3px;border-radius:2px;background:rgba(255,255,255,.35);transition:.3s}
+  .dots i.on{background:#fff;width:18px}
+  /* ---------- section ---------- */
+  .sec-head{display:flex;align-items:center;justify-content:space-between;margin:20px 16px 10px}
+  .sec-head h2{font-size:16.5px;font-weight:800}
+  .sec-head a{font-size:12px;color:var(--t3);text-decoration:none;display:flex;align-items:center;gap:2px}
+  /* ---------- traders ---------- */
+  .traders{display:flex;gap:10px;overflow-x:auto;padding:2px 16px 4px;scrollbar-width:none}
+  .traders::-webkit-scrollbar{display:none}
+  .trader{flex:0 0 128px;background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:13px 12px 12px;display:flex;flex-direction:column;align-items:center;transition:transform .1s}
+  .trader:active{transform:scale(.96)}
+  .trader .ava{width:44px;height:44px;border-radius:50%;padding:2px;background:var(--brand-g)}
+  .trader .ava div{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:16px;color:#fff;border:2px solid var(--card)}
+  .trader .nm{margin-top:8px;font-size:13px;font-weight:700}
+  .trader .roi{margin-top:4px;font-size:17px;font-weight:800;color:var(--up)}
+  .trader .meta{margin-top:2px;font-size:10.5px;color:var(--t3)}
+  .trader .follow{margin-top:9px;width:100%;text-align:center;font-size:12px;font-weight:700;padding:6px 0;
+    border-radius:9px;background:rgba(124,92,255,.16);color:#BBA8FF;border:1px solid rgba(124,92,255,.3)}
+  /* ---------- market ---------- */
+  .tabs{display:flex;gap:4px;margin:0 16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+  .tab{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--t3);padding:7px 0;border-radius:9px;transition:.15s}
+  .tab.on{background:var(--card2);color:var(--t1);font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+  .m-head{display:flex;padding:12px 16px 6px;font-size:11px;color:var(--t3)}
+  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:118px;text-align:right}
+  .coin{display:flex;align-items:center;padding:9px 16px;transition:background .15s}
+  .coin:active{background:rgba(255,255,255,.03)}
+  .coin .c1{flex:1.2;display:flex;align-items:center;gap:10px;min-width:0}
+  .coin .logo-c{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+  .coin .nm{font-size:14.5px;font-weight:700}
+  .coin .nm small{color:var(--t3);font-weight:600;font-size:11px}
+  .coin .tag{margin-top:3px;display:inline-block;font-size:9.5px;color:#BBA8FF;background:rgba(124,92,255,.14);
+    padding:1px 5px;border-radius:4px;font-weight:600}
+  .coin .c2{flex:1;text-align:right;padding-right:10px}
+  .coin .price{font-size:14.5px;font-weight:700;transition:color .3s}
+  .coin .fiat{font-size:11px;color:var(--t3);margin-top:2px}
+  .coin .c3{width:118px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+  .chg{min-width:62px;text-align:center;font-size:12.5px;font-weight:700;padding:6px 0;border-radius:9px;color:#fff}
+  .chg.u{background:var(--up)}.chg.d{background:var(--down)}
+  .flash-u{color:var(--up)!important}.flash-d{color:var(--down)!important}
+  .spark{width:46px;height:26px;flex-shrink:0}
+  /* ---------- data strip ---------- */
+  .strip{display:flex;gap:10px;margin:14px 16px 0}
+  .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
+  .stat .k{font-size:11px;color:var(--t3)}
+  .stat .v{margin-top:5px;font-size:15px;font-weight:800}
+  .stat .v.up{color:var(--up)}
+  .ratio{margin-top:7px;height:5px;border-radius:3px;overflow:hidden;display:flex;gap:2px}
+  .ratio .l{background:var(--up);width:62%}.ratio .r{background:var(--down);flex:1}
+  /* ---------- bottom nav ---------- */
+  .nav{position:absolute;left:0;right:0;bottom:0;height:80px;
+    background:linear-gradient(to top,rgba(9,10,15,.98) 60%,rgba(9,10,15,.75));
+    backdrop-filter:blur(14px);border-top:1px solid var(--line);
+    display:flex;align-items:flex-start;padding:9px 6px calc(10px + env(safe-area-inset-bottom))}
+  .nav .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--t3);font-size:10.5px;font-weight:600;padding-top:3px}
+  .nav .it.on{color:var(--t1)}
+  .nav .it.on svg{color:#9E7BFF}
+  .nav .trade{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:700;color:var(--t1);margin-top:-16px}
+  .nav .trade .ball{width:50px;height:50px;border-radius:50%;background:var(--brand-g);
+    display:flex;align-items:center;justify-content:center;color:#fff;
+    box-shadow:0 6px 20px rgba(124,92,255,.5),0 0 0 5px var(--bg);transition:transform .12s}
+  .nav .trade:active .ball{transform:scale(.92)}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="scroll" id="scroll">
+
+  <!-- status bar -->
+  <div class="statusbar">
+    <span class="num">9:41</span>
+    <span class="icons">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4" y="5" width="3" height="6" rx="1"/><rect x="8" y="2.5" width="3" height="8.5" rx="1"/><rect x="12" y="0" width="3" height="11" rx="1" opacity=".35"/></svg>
+      <svg width="22" height="11" viewBox="0 0 22 11" fill="none"><rect x=".5" y=".5" width="18" height="10" rx="2.5" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="13" height="7" rx="1.5" fill="currentColor"/><path d="M20.5 3.5v4c1-.3 1.5-1.1 1.5-2s-.5-1.7-1.5-2z" fill="currentColor" opacity=".5"/></svg>
+    </span>
+  </div>
+
+  <!-- top bar -->
+  <div class="topbar">
+    <div class="logo"><div class="mark">Δ</div><div class="name">Delta<i>X</i></div></div>
+    <div class="top-actions">
+      <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 7.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-4 3v-5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/><path d="M8 11.5h8M8 14.5h5"/></svg></div>
+      <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2.5" y="12" width="4" height="7" rx="2"/><rect x="17.5" y="12" width="4" height="7" rx="2"/><path d="M20 19a3 3 0 0 1-3 3h-3"/></svg></div>
+    </div>
+  </div>
+
+  <!-- asset card -->
+  <div class="asset">
+    <div class="label">总资产估值 (USDT)
+      <span class="icon-eye" id="eye" style="display:flex">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
+      </span>
+    </div>
+    <div class="total num"><span id="totalAsset">88,131.20</span><small id="totalFiat">≈ ¥ 634,318.65</small></div>
+    <div class="sub"><span>今日盈亏</span><span class="pnl num" id="pnl">+1,204.52 (+1.38%)</span></div>
+    <div class="actions">
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M4 20h16"/></svg></div><span>充值</span></div>
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9m0 0l-4.5 4.5M12 9l4.5 4.5"/><path d="M4 4h16"/></svg></div><span>提现</span></div>
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M3 11h18"/><path d="M8 4v6M16 4v6"/></svg></div><span>红包</span></div>
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.4"/><path d="M3.5 20c.6-3.4 2.8-5.2 5.5-5.2s4.9 1.8 5.5 5.2"/><path d="M16 4.5c1.7.6 2.8 2 2.8 3.9 0 1.4-.6 2.5-1.6 3.2M17.5 14.6c2.2.7 3.6 2.4 4 5.4"/></svg></div><span>跟单</span></div>
+    </div>
+  </div>
+
+  <!-- notice -->
+  <div class="notice">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#BBA8FF" stroke-width="2"><path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg>
+    <div class="wrap"><ul>
+      <li>DeltaX 上线 SUI/USDT 永续合约，最高 75x 杠杆</li>
+      <li>合约大赛第 8 期开启：总奖池 200,000 USDT</li>
+      <li>系统升级公告：7 月 18 日 02:00–02:30 (UTC+8)</li>
+      <li>DeltaX 上线 SUI/USDT 永续合约，最高 75x 杠杆</li>
+    </ul></div>
+  </div>
+
+  <!-- banner -->
+  <div class="banner" id="banner">
+    <div class="slide s1 on"><h3>新人合约体验金 100 U</h3><p>注册即领 · 盈利可提 · 亏损平台承担</p><span class="cta">领取</span></div>
+    <div class="slide s2"><h3>限时 0 手续费开仓</h3><p>BTC / ETH 永续 · 每日前 3 笔免 Taker 费</p><span class="cta">去交易</span></div>
+    <div class="slide s3"><h3>跟单大师赛</h3><p>晒收益赢 88,888 USDT 奖池</p><span class="cta">报名</span></div>
+    <div class="dots"><i class="on"></i><i></i><i></i></div>
+  </div>
+
+  <!-- market -->
+  <div class="sec-head"><h2>行情</h2><a href="javascript:;">全部 ›</a></div>
+  <div class="tabs" id="tabs">
+    <div class="tab on" data-t="fav">自选</div>
+    <div class="tab" data-t="gain">涨幅</div>
+    <div class="tab" data-t="lose">跌幅</div>
+    <div class="tab" data-t="volume">成交额</div>
+  </div>
+  <div class="m-head"><span class="c1">名称 / 24h额</span><span class="c2">最新价</span><span class="c3">24h 涨跌</span></div>
+  <div id="coins"></div>
+
+  <!-- data strip -->
+  <div class="strip">
+    <div class="stat"><div class="k">BTC 资金费率 / 倒计时</div><div class="v up num">+0.0081% <span style="font-size:11px;color:var(--t3);font-weight:600" class="num" id="funding">02:51:09</span></div></div>
+    <div class="stat"><div class="k">ETH 资金费率 / 倒计时</div><div class="v up num">+0.0103% <span style="font-size:11px;color:var(--t3);font-weight:600" class="num" id="fundingEth">02:51:09</span></div></div>
+  </div>
+
+  <!-- traders -->
+  <div class="sec-head"><h2>金牌带单 · 一键跟随</h2><a href="javascript:;">榜单 ›</a></div>
+  <div class="traders" id="traders"></div>
+
+  <div style="text-align:center;color:var(--t3);font-size:11px;padding:22px 0 8px">— DeltaX · 交易有风险，杠杆需谨慎 —</div>
+</div>
+
+  <!-- bottom nav -->
+  <div class="nav">
+    <div class="it on"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9v11h13V9"/></svg>首页</div>
+    <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V11M10 19V5M16 19v-8M22 19H2"/></svg>行情</div>
+    <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-5 4 3.5L21 7"/><path d="M15.5 7H21v5.5"/></svg>合约</div>
+    <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16.5 15h1.5"/></svg>资产</div>
+  </div>
+</div>
+
+<script>
+/* ------------ data ------------ */
+const COINS = [
+  {s:"BTC", n:"Bitcoin",  p:64625.4, chg:+2.31, vol:"30.0亿", c:"#F7931A", hot:1, fav:1},
+  {s:"ETH", n:"Ethereum", p:3418.62, chg:+1.86, vol:"18.4亿", c:"#627EEA", hot:1, fav:1},
+  {s:"SOL", n:"Solana",   p:172.35,  chg:+5.74, vol:"9.2亿",  c:"#9945FF", hot:1, fav:1},
+  {s:"BNB", n:"BNB",      p:592.80,  chg:-0.62, vol:"4.1亿",  c:"#F0B90B", hot:1},
+  {s:"XRP", n:"Ripple",   p:0.5872,  chg:-1.24, vol:"3.8亿",  c:"#23292F", hot:1},
+  {s:"DOGE",n:"Dogecoin", p:0.1382,  chg:+3.95, vol:"5.6亿",  c:"#C2A633", hot:1},
+  {s:"SUI", n:"Sui",      p:1.084,   chg:+12.6, vol:"2.9亿",  c:"#4DA2FF", nw:1},
+  {s:"TIA", n:"Celestia", p:6.42,    chg:+8.91, vol:"1.7亿",  c:"#7B2BF9", nw:1},
+  {s:"WLD", n:"Worldcoin",p:2.318,   chg:-4.05, vol:"1.2亿",  c:"#1B1B1B", nw:1},
+  {s:"PEPE",n:"Pepe",     p:0.00001214, chg:+15.2, vol:"2.2亿", c:"#3D8130", nw:1},
+];
+const TRADERS = [
+  {n:"啸风", roi:"+218.6%", win:"胜率 76% · 跟单 1,204", g:"#FF8A5E"},
+  {n:"Kira", roi:"+164.2%", win:"胜率 71% · 跟单 986", g:"#4FD8FF"},
+  {n:"合约老王", roi:"+139.8%", win:"胜率 68% · 跟单 2,310", g:"#0FD98C"},
+  {n:"Momo", roi:"+112.4%", win:"胜率 74% · 跟单 655", g:"#9E7BFF"},
+];
+const CNY = 7.19;
+
+/* ------------ sparkline ------------ */
+function spark(chg, color){
+  const n = 26, pts = []; let v = 50;
+  for(let i=0;i<n;i++){ v += (Math.random()-0.5)*16 + (chg>=0? 0.9 : -0.9); v=Math.max(8,Math.min(92,v)); pts.push(v); }
+  const min=Math.min(...pts), max=Math.max(...pts), rng=(max-min)||1;
+  const xy = pts.map((p,i)=>[ (i/(n-1))*46, 24-((p-min)/rng)*20-2 ]);
+  const d = xy.map((p,i)=>(i? "L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join("");
+  const area = d + "L46,26L0,26Z";
+  return `<svg class="spark" viewBox="0 0 46 26"><path d="${area}" fill="${color}" opacity=".14"/><path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+}
+
+/* ------------ market list ------------ */
+function fmt(p){ return p>=1000 ? p.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})
+  : p>=1 ? p.toFixed(p>=100?2:p>=10?2:3) : p>=0.001 ? p.toFixed(4) : p.toFixed(8); }
+
+function parseCnVolume(v){
+  const match = String(v).match(/([\d.]+)([万亿]?)/);
+  if(!match) return 0;
+  const num = Number(match[1]) || 0;
+  const unit = match[2];
+  if(unit === "亿") return num * 1e8;
+  if(unit === "万") return num * 1e4;
+  return num;
+}
+
+function render(tab){
+  let list = COINS.filter(c => tab==="fav" ? c.fav : true);
+  if(tab==="gain") list = [...COINS].sort((a,b)=>b.chg-a.chg).slice(0,6);
+  if(tab==="lose") list = [...COINS].sort((a,b)=>a.chg-b.chg).slice(0,6);
+  if(tab==="volume") list = [...COINS].sort((a,b)=>parseCnVolume(b.vol)-parseCnVolume(a.vol)).slice(0,6);
+  document.getElementById("coins").innerHTML = list.map(c=>{
+    const up = c.chg>=0, col = up? "var(--up)":"var(--down)";
+    return `<div class="coin" data-s="${c.s}">
+      <div class="c1">
+        <div class="logo-c" style="background:${c.c}">${c.s[0]}</div>
+        <div><div class="nm">${c.s}<small>/USDT</small></div><span class="tag">永续 75x</span></div>
+      </div>
+      <div class="c2"><div class="price num" id="p-${c.s}">${fmt(c.p)}</div><div class="fiat num">≈¥${fmt(c.p*CNY)} · ${c.vol}</div></div>
+      <div class="c3">${spark(c.chg, up? "#0FD98C":"#FF4A5E")}<div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
+    </div>`;
+  }).join("");
+}
+let curTab="fav"; render(curTab);
+document.getElementById("tabs").addEventListener("click",e=>{
+  const t=e.target.closest(".tab"); if(!t)return;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
+  curTab=t.dataset.t; render(curTab);
+});
+
+/* ------------ live ticks ------------ */
+setInterval(()=>{
+  const list=[...document.querySelectorAll(".coin")];
+  for(let k=0;k<2;k++){
+    const el=list[Math.floor(Math.random()*list.length)]; if(!el)continue;
+    const c=COINS.find(x=>x.s===el.dataset.s); if(!c)continue;
+    const dir=Math.random()>0.5?1:-1;
+    c.p*= 1 + dir*(Math.random()*0.0012);
+    const pe=document.getElementById("p-"+c.s); if(!pe)continue;
+    pe.textContent=fmt(c.p);
+    pe.classList.remove("flash-u","flash-d"); void pe.offsetWidth;
+    pe.classList.add(dir>0?"flash-u":"flash-d");
+    setTimeout(()=>pe.classList.remove("flash-u","flash-d"),450);
+  }
+},1500);
+
+/* ------------ traders ------------ */
+document.getElementById("traders").innerHTML = TRADERS.map(t=>`
+  <div class="trader">
+    <div class="ava" style="background:linear-gradient(135deg,${t.g},#7C5CFF)"><div style="background:var(--card2)">${t.n[0]}</div></div>
+    <div class="nm">${t.n}</div><div class="roi num">${t.roi}</div>
+    <div class="meta">30日收益 · ${t.win}</div>
+    <div class="follow">跟单</div>
+  </div>`).join("");
+
+/* ------------ banner ------------ */
+let bi=0; const slides=document.querySelectorAll(".slide"), dots=document.querySelectorAll(".dots i");
+setInterval(()=>{ bi=(bi+1)%slides.length;
+  slides.forEach((s,i)=>s.classList.toggle("on",i===bi));
+  dots.forEach((d,i)=>d.classList.toggle("on",i===bi));
+},3600);
+
+/* ------------ eye toggle ------------ */
+let hidden=false;
+const asset=document.getElementById("totalAsset"), fiat=document.getElementById("totalFiat"), pnl=document.getElementById("pnl");
+const orig={a:asset.textContent,f:fiat.textContent,p:pnl.textContent};
+document.getElementById("eye").addEventListener("click",()=>{
+  hidden=!hidden;
+  asset.textContent = hidden? "＊＊＊＊＊＊" : orig.a;
+  fiat.textContent  = hidden? "≈ ¥ ＊＊＊＊" : orig.f;
+  pnl.textContent   = hidden? "＊＊＊＊"     : orig.p;
+});
+
+/* ------------ funding countdown ------------ */
+let sec=2*3600+51*60+9;
+setInterval(()=>{ sec=(sec-1+28800)%28800;
+  const h=String(Math.floor(sec/3600)).padStart(2,"0"),m=String(Math.floor(sec%3600/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");
+  const time=`${h}:${m}:${s}`;
+  document.getElementById("funding").textContent=time;
+  document.getElementById("fundingEth").textContent=time;
+},1000);
+</script>
+</body>
+</html>
