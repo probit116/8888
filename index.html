@@ -29,7 +29,7 @@
     .phone{width:414px;height:min(880px,94vh);border-radius:46px;border:1px solid #23262f;
       box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 10px #0b0c11,0 0 90px rgba(124,92,255,.14)}
   }
-  .scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:176px}
+  .scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:96px}
   .scroll::-webkit-scrollbar{display:none}
   /* ---------- status bar ---------- */
   .statusbar{display:flex;justify-content:space-between;align-items:center;
@@ -45,7 +45,6 @@
   .logo .name i{font-style:normal;background:var(--brand-g);-webkit-background-clip:text;background-clip:text;color:transparent}
   .search{flex:1;display:flex;align-items:center;gap:7px;background:var(--card);
     border:1px solid var(--line);border-radius:99px;padding:8px 13px;color:var(--t3);font-size:13px;white-space:nowrap;overflow:hidden}
-  .top-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
   .icon-btn{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
     color:var(--t2);flex-shrink:0;transition:transform .1s}
   .icon-btn:active{transform:scale(.9)}
@@ -112,7 +111,7 @@
   .tab{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--t3);padding:7px 0;border-radius:9px;transition:.15s}
   .tab.on{background:var(--card2);color:var(--t1);font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
   .m-head{display:flex;padding:12px 16px 6px;font-size:11px;color:var(--t3)}
-  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:82px;text-align:right}
+  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:118px;text-align:right}
   .coin{display:flex;align-items:center;padding:9px 16px;transition:background .15s}
   .coin:active{background:rgba(255,255,255,.03)}
   .coin .c1{flex:1.2;display:flex;align-items:center;gap:10px;min-width:0}
@@ -125,10 +124,11 @@
   .coin .c2{flex:1;text-align:right;padding-right:10px}
   .coin .price{font-size:14.5px;font-weight:700;transition:color .3s}
   .coin .fiat{font-size:11px;color:var(--t3);margin-top:2px}
-  .coin .c3{width:82px;display:flex;align-items:center;justify-content:flex-end}
+  .coin .c3{width:118px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
   .chg{min-width:62px;text-align:center;font-size:12.5px;font-weight:700;padding:6px 0;border-radius:9px;color:#fff}
   .chg.u{background:var(--up)}.chg.d{background:var(--down)}
   .flash-u{color:var(--up)!important}.flash-d{color:var(--down)!important}
+  .spark{width:46px;height:26px;flex-shrink:0}
   /* ---------- data strip ---------- */
   .strip{display:flex;gap:10px;margin:14px 16px 0}
   .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
@@ -138,7 +138,7 @@
   .ratio{margin-top:7px;height:5px;border-radius:3px;overflow:hidden;display:flex;gap:2px}
   .ratio .l{background:var(--up);width:62%}.ratio .r{background:var(--down);flex:1}
   /* ---------- bottom nav ---------- */
-  .nav{position:absolute;left:0;right:0;bottom:74px;height:80px;
+  .nav{position:absolute;left:0;right:0;bottom:0;height:80px;
     background:linear-gradient(to top,rgba(9,10,15,.98) 60%,rgba(9,10,15,.75));
     backdrop-filter:blur(14px);border-top:1px solid var(--line);
     display:flex;align-items:flex-start;padding:9px 6px calc(10px + env(safe-area-inset-bottom))}
@@ -150,17 +150,6 @@
     display:flex;align-items:center;justify-content:center;color:#fff;
     box-shadow:0 6px 20px rgba(124,92,255,.5),0 0 0 5px var(--bg);transition:transform .12s}
   .nav .trade:active .ball{transform:scale(.92)}
-  .h5-shell{position:absolute;left:0;right:0;bottom:0;height:74px;background:#f3f3f5;color:#121212;
-    border-top:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;justify-content:space-between;
-    padding:6px 12px calc(8px + env(safe-area-inset-bottom))}
-  .h5-top{display:flex;align-items:center;gap:10px;font-size:12px;color:#4b4b50}
-  .h5-top .mode{font-weight:700;letter-spacing:.01em}
-  .h5-top .addr{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;
-    background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:6px 12px;font-weight:600;color:#1b1b1f}
-  .h5-top .addr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .h5-tools{display:flex;align-items:center;justify-content:space-between;padding:0 2px 2px;color:#70757f}
-  .h5-tools .tool{width:34px;height:24px;display:flex;align-items:center;justify-content:center}
-  .home-indicator{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);width:108px;height:4px;border-radius:999px;background:#111}
 </style>
 </head>
 <body>
@@ -179,10 +168,12 @@
   <!-- top bar -->
   <div class="topbar">
     <div class="logo"><div class="mark">Δ</div><div class="name">Delta<i>X</i></div></div>
-    <div class="top-actions">
-      <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 7.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-4 3v-5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/><path d="M8 11.5h8M8 14.5h5"/></svg></div>
-      <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2.5" y="12" width="4" height="7" rx="2"/><rect x="17.5" y="12" width="4" height="7" rx="2"/><path d="M20 19a3 3 0 0 1-3 3h-3"/></svg></div>
+    <div class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      搜索 BTC / 合约 / 跟单
     </div>
+    <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg></div>
+    <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2.5" y="12" width="4" height="7" rx="2"/><rect x="17.5" y="12" width="4" height="7" rx="2"/><path d="M20 19a3 3 0 0 1-3 3h-3"/></svg></div>
   </div>
 
   <!-- asset card -->
@@ -197,7 +188,7 @@
     <div class="actions">
       <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M4 20h16"/></svg></div><span>充值</span></div>
       <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9m0 0l-4.5 4.5M12 9l4.5 4.5"/><path d="M4 4h16"/></svg></div><span>提现</span></div>
-      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M3 11h18"/><path d="M8 4v6M16 4v6"/></svg></div><span>红包</span></div>
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h13m0 0l-3-3m3 3l-3 3M20 16H7m0 0l3-3m-3 3l3 3"/></svg></div><span>划转</span></div>
       <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.4"/><path d="M3.5 20c.6-3.4 2.8-5.2 5.5-5.2s4.9 1.8 5.5 5.2"/><path d="M16 4.5c1.7.6 2.8 2 2.8 3.9 0 1.4-.6 2.5-1.6 3.2M17.5 14.6c2.2.7 3.6 2.4 4 5.4"/></svg></div><span>跟单</span></div>
     </div>
   </div>
@@ -224,10 +215,10 @@
   <!-- market -->
   <div class="sec-head"><h2>行情</h2><a href="javascript:;">全部 ›</a></div>
   <div class="tabs" id="tabs">
-    <div class="tab on" data-t="fav">自选</div>
-    <div class="tab" data-t="gain">涨幅</div>
-    <div class="tab" data-t="lose">跌幅</div>
-    <div class="tab" data-t="volume">成交额</div>
+    <div class="tab" data-t="fav">自选</div>
+    <div class="tab on" data-t="hot">热门</div>
+    <div class="tab" data-t="gain">涨幅榜</div>
+    <div class="tab" data-t="new">新币</div>
   </div>
   <div class="m-head"><span class="c1">名称 / 24h额</span><span class="c2">最新价</span><span class="c3">24h 涨跌</span></div>
   <div id="coins"></div>
@@ -235,7 +226,7 @@
   <!-- data strip -->
   <div class="strip">
     <div class="stat"><div class="k">BTC 资金费率 / 倒计时</div><div class="v up num">+0.0081% <span style="font-size:11px;color:var(--t3);font-weight:600" class="num" id="funding">02:51:09</span></div></div>
-    <div class="stat"><div class="k">ETH 资金费率 / 倒计时</div><div class="v up num">+0.0103% <span style="font-size:11px;color:var(--t3);font-weight:600" class="num" id="fundingEth">02:51:09</span></div></div>
+    <div class="stat"><div class="k">全网多空比 (24h)</div><div class="v num">1.63 <span style="font-size:11px;color:var(--t3);font-weight:600">多 62%</span></div><div class="ratio"><div class="l"></div><div class="r"></div></div></div>
   </div>
 
   <!-- traders -->
@@ -249,26 +240,9 @@
   <div class="nav">
     <div class="it on"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9v11h13V9"/></svg>首页</div>
     <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V11M10 19V5M16 19v-8M22 19H2"/></svg>行情</div>
+    <div class="trade"><div class="ball"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3v4M8 17v4M16 5v4M16 19v2M5.5 7h5v10h-5zM13.5 9h5v10h-5z" stroke-linejoin="round"/></svg></div>交易</div>
     <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-5 4 3.5L21 7"/><path d="M15.5 7H21v5.5"/></svg>合约</div>
     <div class="it"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16.5 15h1.5"/></svg>资产</div>
-  </div>
-  <div class="h5-shell">
-    <div class="h5-top">
-      <span class="mode">aA</span>
-      <div class="addr">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 1 1 8 0v3"/></svg>
-        <span>8888.com · H5 原型</span>
-      </div>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 1-2.34-5.66"/><path d="M20 4v7h-7"/></svg>
-    </div>
-    <div class="h5-tools">
-      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></div>
-      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V5"/><path d="M8 9l4-4 4 4"/><rect x="5" y="16" width="14" height="3" rx="1.5"/></svg></div>
-      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h9a3 3 0 0 1 3 3v13l-6-3-6 3V7a3 3 0 0 1 3-3z"/></svg></div>
-      <div class="tool"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="12" height="12" rx="2"/><path d="M8 4h10a2 2 0 0 1 2 2v10"/></svg></div>
-    </div>
-    <div class="home-indicator"></div>
   </div>
 </div>
 
@@ -309,21 +283,9 @@ function spark(chg, color){
 function fmt(p){ return p>=1000 ? p.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})
   : p>=1 ? p.toFixed(p>=100?2:p>=10?2:3) : p>=0.001 ? p.toFixed(4) : p.toFixed(8); }
 
-function parseCnVolume(v){
-  const match = String(v).match(/([\d.]+)([万亿]?)/);
-  if(!match) return 0;
-  const num = Number(match[1]) || 0;
-  const unit = match[2];
-  if(unit === "亿") return num * 1e8;
-  if(unit === "万") return num * 1e4;
-  return num;
-}
-
 function render(tab){
-  let list = COINS.filter(c => tab==="fav" ? c.fav : true);
+  let list = COINS.filter(c => tab==="hot"? c.hot : tab==="fav"? c.fav : tab==="new"? c.nw : true);
   if(tab==="gain") list = [...COINS].sort((a,b)=>b.chg-a.chg).slice(0,6);
-  if(tab==="lose") list = [...COINS].sort((a,b)=>a.chg-b.chg).slice(0,6);
-  if(tab==="volume") list = [...COINS].sort((a,b)=>parseCnVolume(b.vol)-parseCnVolume(a.vol)).slice(0,6);
   document.getElementById("coins").innerHTML = list.map(c=>{
     const up = c.chg>=0, col = up? "var(--up)":"var(--down)";
     return `<div class="coin" data-s="${c.s}">
@@ -332,11 +294,11 @@ function render(tab){
         <div><div class="nm">${c.s}<small>/USDT</small></div><span class="tag">永续 75x</span></div>
       </div>
       <div class="c2"><div class="price num" id="p-${c.s}">${fmt(c.p)}</div><div class="fiat num">≈¥${fmt(c.p*CNY)} · ${c.vol}</div></div>
-      <div class="c3"><div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
+      <div class="c3">${spark(c.chg, up? "#0FD98C":"#FF4A5E")}<div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
     </div>`;
   }).join("");
 }
-let curTab="fav"; render(curTab);
+let curTab="hot"; render(curTab);
 document.getElementById("tabs").addEventListener("click",e=>{
   const t=e.target.closest(".tab"); if(!t)return;
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
@@ -390,9 +352,7 @@ document.getElementById("eye").addEventListener("click",()=>{
 let sec=2*3600+51*60+9;
 setInterval(()=>{ sec=(sec-1+28800)%28800;
   const h=String(Math.floor(sec/3600)).padStart(2,"0"),m=String(Math.floor(sec%3600/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");
-  const time=`${h}:${m}:${s}`;
-  document.getElementById("funding").textContent=time;
-  document.getElementById("fundingEth").textContent=time;
+  document.getElementById("funding").textContent=`${h}:${m}:${s}`;
 },1000);
 </script>
 </body>
