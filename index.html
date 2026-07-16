@@ -266,12 +266,12 @@
   <!-- market -->
   <div class="sec-head"><h2>行情</h2><a href="javascript:;">全部 ›</a></div>
   <div class="tabs" id="tabs">
-    <div class="tab on" data-t="fav">自选</div>
-    <div class="tab" data-t="gain">涨幅</div>
+    <div class="tab" data-t="fav">自选</div>
+    <div class="tab on" data-t="gain">涨幅</div>
     <div class="tab" data-t="lose">跌幅</div>
     <div class="tab" data-t="volume">成交额</div>
   </div>
-  <div class="m-head"><span class="c1">名称 / 24h额</span><span class="c2">最新价</span><span class="c3">24h 涨跌</span></div>
+  <div class="m-head"><span class="c1">名称</span><span class="c2">最新价/24h额</span><span class="c3">24h涨跌</span></div>
   <div id="coins"></div>
 
   <!-- data strip -->
@@ -378,7 +378,7 @@ function render(tab){
     </div>`;
   }).join("");
 }
-let curTab="fav"; render(curTab);
+let curTab="gain"; render(curTab);
 document.getElementById("tabs").addEventListener("click",e=>{
   const t=e.target.closest(".tab"); if(!t)return;
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
