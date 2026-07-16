@@ -112,7 +112,7 @@
   .tab{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--t3);padding:7px 0;border-radius:9px;transition:.15s}
   .tab.on{background:var(--card2);color:var(--t1);font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
   .m-head{display:flex;padding:12px 16px 6px;font-size:11px;color:var(--t3)}
-  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:118px;text-align:right}
+  .m-head .c1{flex:1.2}.m-head .c2{flex:1;text-align:right}.m-head .c3{width:82px;text-align:right}
   .coin{display:flex;align-items:center;padding:9px 16px;transition:background .15s}
   .coin:active{background:rgba(255,255,255,.03)}
   .coin .c1{flex:1.2;display:flex;align-items:center;gap:10px;min-width:0}
@@ -125,11 +125,10 @@
   .coin .c2{flex:1;text-align:right;padding-right:10px}
   .coin .price{font-size:14.5px;font-weight:700;transition:color .3s}
   .coin .fiat{font-size:11px;color:var(--t3);margin-top:2px}
-  .coin .c3{width:118px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+  .coin .c3{width:82px;display:flex;align-items:center;justify-content:flex-end}
   .chg{min-width:62px;text-align:center;font-size:12.5px;font-weight:700;padding:6px 0;border-radius:9px;color:#fff}
   .chg.u{background:var(--up)}.chg.d{background:var(--down)}
   .flash-u{color:var(--up)!important}.flash-d{color:var(--down)!important}
-  .spark{width:46px;height:26px;flex-shrink:0}
   /* ---------- data strip ---------- */
   .strip{display:flex;gap:10px;margin:14px 16px 0}
   .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
@@ -304,7 +303,7 @@ function render(tab){
         <div><div class="nm">${c.s}<small>/USDT</small></div><span class="tag">永续 75x</span></div>
       </div>
       <div class="c2"><div class="price num" id="p-${c.s}">${fmt(c.p)}</div><div class="fiat num">≈¥${fmt(c.p*CNY)} · ${c.vol}</div></div>
-      <div class="c3">${spark(c.chg, up? "#0FD98C":"#FF4A5E")}<div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
+      <div class="c3"><div class="chg ${up?"u":"d"} num">${up?"+":""}${c.chg.toFixed(2)}%</div></div>
     </div>`;
   }).join("");
 }
